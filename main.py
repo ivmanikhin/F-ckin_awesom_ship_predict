@@ -17,7 +17,7 @@ PROXIES = []
 
 
 ID = [771036, 921787, 992297, 842547, 842551, 833232]
-for id in range(860000, 870000):
+for id in range(850000, 860000):
     try:
         link = f"https://lk.rs-class.org/regbook/vessel?ln=en&a=print&fleet_id={id}"
         print(link)
@@ -32,7 +32,7 @@ for id in range(860000, 870000):
     except ValueError:
         pass
 
-database.to_feather("database_860000-870000")
+database.to_feather("database_850000-860000")
 
 
 
