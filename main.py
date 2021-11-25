@@ -1,14 +1,45 @@
-import re
+import requests
 import pandas as pd
-
-file = open('response.html')
-spsheet = pd.read_html("response.html")
-print(spsheet)
+import re
+# from bs4 import BeautifulSoup
 
 
+link = f"https://lk.rs-class.org/regbook/vessel?ln=en&a=print&fleet_id=771036"
+response = requests.get(link).text.replace("<br>", "\n")
+spsheet = pd.read_html(response)[0].transpose()
+spsheet.columns = spsheet.iloc[0]
+database = spsheet[1:].drop(labels=["General", "Type of vessel", "Building information", "Dimensions and speed", "Machinery",
+            "Refrigerating plant and radio navigational equipment", "Holds, decks, passengers",
+            "Hatches, Derricks, Cranes", "Capacities", "Companies related to the vessel"], axis=1)
+print(database)
+
+PROXIES = []
+
+
+ID = [771036, 921787, 992297, 842547, 842551, 833232]
+for id in range(860000, 870000):
+    try:
+        link = f"https://lk.rs-class.org/regbook/vessel?ln=en&a=print&fleet_id={id}"
+        print(link)
+        response = requests.get(link).text.replace("<br>", "\n")
+        spsheet = pd.read_html(response)[0].transpose()
+        spsheet.columns = spsheet.iloc[0]
+        spsheet = spsheet[1:].drop(labels=["General", "Type of vessel", "Building information", "Dimensions and speed", "Machinery",
+                    "Refrigerating plant and radio navigational equipment", "Holds, decks, passengers",
+                    "Hatches, Derricks, Cranes", "Capacities", "Companies related to the vessel"], axis=1)
+        database = pd.concat([database, spsheet], ignore_index=True, axis=0)
+        print(database)
+    except ValueError:
+        pass
+
+database.to_feather("database_860000-870000")
 
 
 
+
+
+
+# spsheet = dict(pd.read_html(response)[0].to_dict(orient="split")["data"])
 # import PyPDF2 as ppdf
 # import pandas as pd
 # import tabula
