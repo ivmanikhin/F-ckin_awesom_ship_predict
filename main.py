@@ -1,10 +1,10 @@
 import requests
 import pandas as pd
-import re
+# import re
 # from bs4 import BeautifulSoup
 
 
-link = f"https://lk.rs-class.org/regbook/vessel?ln=en&a=print&fleet_id=771036"
+link = "https://lk.rs-class.org/regbook/vessel?ln=en&a=print&fleet_id=771036"
 response = requests.get(link).text.replace("<br>", "\n")
 spsheet = pd.read_html(response)[0].transpose()
 spsheet.columns = spsheet.iloc[0]
@@ -13,26 +13,28 @@ database = spsheet[1:].drop(labels=["General", "Type of vessel", "Building infor
             "Hatches, Derricks, Cranes", "Capacities", "Companies related to the vessel"], axis=1)
 print(database)
 
-PROXIES = []
+# PROXIES = []
 
 
-ID = [771036, 921787, 992297, 842547, 842551, 833232]
-for id in range(850000, 860000):
-    try:
-        link = f"https://lk.rs-class.org/regbook/vessel?ln=en&a=print&fleet_id={id}"
-        print(link)
-        response = requests.get(link).text.replace("<br>", "\n")
-        spsheet = pd.read_html(response)[0].transpose()
-        spsheet.columns = spsheet.iloc[0]
-        spsheet = spsheet[1:].drop(labels=["General", "Type of vessel", "Building information", "Dimensions and speed", "Machinery",
-                    "Refrigerating plant and radio navigational equipment", "Holds, decks, passengers",
-                    "Hatches, Derricks, Cranes", "Capacities", "Companies related to the vessel"], axis=1)
-        database = pd.concat([database, spsheet], ignore_index=True, axis=0)
-        print(database)
-    except ValueError:
-        pass
+# ID = [771036, 921787, 992297, 842547, 842551, 833232]
+# RANGES = [[840000, 850000], [830000, 840000], [820000, 830000], [810000, 820000],]
+for _ in range(87, 98):
+    for id in range(_ * 10000, (_ + 1) * 10000):
+        try:
+            link = f"https://lk.rs-class.org/regbook/vessel?ln=en&a=print&fleet_id={id}"
+            print(link)
+            response = requests.get(link).text.replace("<br>", "\n")
+            spsheet = pd.read_html(response)[0].transpose()
+            spsheet.columns = spsheet.iloc[0]
+            spsheet = spsheet[1:].drop(labels=["General", "Type of vessel", "Building information", "Dimensions and speed", "Machinery",
+                        "Refrigerating plant and radio navigational equipment", "Holds, decks, passengers",
+                        "Hatches, Derricks, Cranes", "Capacities", "Companies related to the vessel"], axis=1)
+            database = pd.concat([database, spsheet], ignore_index=True, axis=0)
+            print(database)
+        except ValueError:
+            pass
 
-database.to_feather("database_850000-860000")
+    database.to_feather(f"database_{_}0000-{_ + 1}0000")
 
 
 
