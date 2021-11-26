@@ -18,11 +18,11 @@ print(database)
 
 # ID = [771036, 921787, 992297, 842547, 842551, 833232]
 # RANGES = [[840000, 850000], [830000, 840000], [820000, 830000], [810000, 820000],]
-for _ in range(87, 98):
-    for id in range(_ * 10000, (_ + 1) * 10000):
+for _ in range(930000, 980000, 2000):
+    for id in range(_, _ + 2000):
         try:
             link = f"https://lk.rs-class.org/regbook/vessel?ln=en&a=print&fleet_id={id}"
-            print(link)
+            print(f"{link}   {len(database)}")
             response = requests.get(link).text.replace("<br>", "\n")
             spsheet = pd.read_html(response)[0].transpose()
             spsheet.columns = spsheet.iloc[0]
@@ -34,7 +34,7 @@ for _ in range(87, 98):
         except ValueError:
             pass
 
-    database.to_feather(f"database_{_}0000-{_ + 1}0000")
+    database.to_feather(f"database_930000-{_ + 2000}")
 
 
 
