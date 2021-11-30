@@ -19,11 +19,11 @@ print(database)
 
 
 # ID = [771036, 921787, 992297, 842547, 842551, 833232]
-RANGES = list(range(0, 59000, 2000))
+RANGES = list(range(58000, 590000, 1000))
 # random.shuffle(RANGES)
 print(RANGES)
 for _ in RANGES:
-    for id in range(_, _ + 2000):
+    for id in range(_, _ + 1000):
         try:
             link = f"https://lk.rs-class.org/regbook/vessel?ln=en&a=print&fleet_id={id}"
             print(f"{link}   {len(database)}")
@@ -38,8 +38,8 @@ for _ in RANGES:
         except ValueError:
             pass
 
-    database.to_csv(f"data/database_{_}-{_ + 2000}.csv")
-    database = database.iloc[0:0]
+    database.to_csv(f"data/database_58000-{_ + 1000}.csv")
+    # database = database.iloc[0:0]
 
 
 
