@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+import random
 # import re
 # from bs4 import BeautifulSoup
 
@@ -11,14 +12,17 @@ spsheet.columns = spsheet.iloc[0]
 database = spsheet[1:].drop(labels=["General", "Type of vessel", "Building information", "Dimensions and speed", "Machinery",
             "Refrigerating plant and radio navigational equipment", "Holds, decks, passengers",
             "Hatches, Derricks, Cranes", "Capacities", "Companies related to the vessel"], axis=1)
+database = database.iloc[0:0]
 print(database)
 
 # PROXIES = []
 
 
 # ID = [771036, 921787, 992297, 842547, 842551, 833232]
-# RANGES = [[840000, 850000], [830000, 840000], [820000, 830000], [810000, 820000],]
-for _ in range(930000, 980000, 2000):
+RANGES = list(range(0, 59000, 2000))
+# random.shuffle(RANGES)
+print(RANGES)
+for _ in RANGES:
     for id in range(_, _ + 2000):
         try:
             link = f"https://lk.rs-class.org/regbook/vessel?ln=en&a=print&fleet_id={id}"
@@ -34,7 +38,8 @@ for _ in range(930000, 980000, 2000):
         except ValueError:
             pass
 
-    database.to_feather(f"database_930000-{_ + 2000}")
+    database.to_csv(f"data/database_{_}-{_ + 2000}.csv")
+    database = database.iloc[0:0]
 
 
 
