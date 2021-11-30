@@ -19,7 +19,7 @@ print(database)
 
 
 # ID = [771036, 921787, 992297, 842547, 842551, 833232]
-RANGES = list(range(58000, 590000, 1000))
+RANGES = list(range(109000, 590000, 1000))
 # random.shuffle(RANGES)
 print(RANGES)
 for _ in RANGES:
