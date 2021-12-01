@@ -19,9 +19,9 @@ print(database)
 
 
 # ID = [771036, 921787, 992297, 842547, 842551, 833232]
-RANGES = list(range(109000, 590000, 1000))
+RANGES = list(range(1220000, 2000000, 1000))
 # random.shuffle(RANGES)
-print(RANGES)
+# print(RANGES)
 for _ in RANGES:
     for id in range(_, _ + 1000):
         try:
@@ -38,7 +38,7 @@ for _ in RANGES:
         except ValueError:
             pass
 
-    database.to_csv(f"data/database_109000-{_ + 1000}.csv")
+    database.to_csv(f"data/database_1000000-{_ - 1000}.csv")
     # database = database.iloc[0:0]
 
 
